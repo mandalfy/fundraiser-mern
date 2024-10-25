@@ -72,7 +72,7 @@ app.delete('/fundraisers/:id', async (req, res) => {
       if(!fundraiser){
          return res.status(404).send({message: 'Fundraiser not found.'});
       }
-      res.status(200).send({message: 'Fundraiser has been deleted.', fundraiser});
+      res.status(200).send({message: 'Fundraiser has been deleted sucessfully.', fundraiser});
    } catch (error){
       res.status(500).send({message: 'Error deleting the Fundraiser.', error});
    }
