@@ -60,7 +60,7 @@ app.patch('/fundraisers/:id', async (req, res) => {
        if (!fundraiser) {
            return res.status(404).send({ message: 'Fundraiser not found.' });
        }
-       res.status(200).send({ message: 'Fundraiser updated successfully.', fundraiser });
+       res.status(200).send({ message: 'Fundraiser updated.', fundraiser });
    } catch (error) {
        res.status(400).send({ message: 'Error updating fundraiser.', error });
    }
