@@ -7,6 +7,7 @@ const socketIo = require('socket.io');
 const app = express();
 const cors = require('cors');
 
+
 require("dotenv").config();
 
 app.use(cors());1
@@ -18,9 +19,9 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
    .then(() => console.log("Connected to MongoDB"))
    .catch(err => console.log("Failed to connect to MongoDB", err));
 
-   const port = process.env.PORT || 3000;
-   const server = http.createServer(app); 
-   const io = socketIo(server);
+const port = process.env.PORT || 3000;
+const server = http.createServer(app); 
+const io = socketIo(server);
 
    server.listen(port, () => {
       console.log(`Server running on http://localhost:${port}`);
@@ -108,4 +109,5 @@ app.post('/donate', async (req, res) => {
        res.status(400).send(error);
    }
 });
+
 
