@@ -2,26 +2,44 @@ const express = require("express");
 const mongoose = require("mongoose");
 const fundraiserRoutes = require("./routes/fundraiser");
 const Fundraiser = require("./models/Fundraiser");
+const http = require('http'); 
+const socketIo = require('socket.io');
+const app = express();
+const cors = require('cors');
 
 require("dotenv").config();
 
-const app = express();
-const port = process.env.PORT || 3000;
-
+app.use(cors());1
 app.use(express.json());
 app.use("/fundraisers", fundraiserRoutes);
 
-app.get('/', (req, res) => {
-   res.send('Welcome to our Fundraising platform!');
-});
-
+//MONGO DB CONNECTION 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
    .then(() => console.log("Connected to MongoDB"))
    .catch(err => console.log("Failed to connect to MongoDB", err));
 
-app.listen(port, () => {
-   console.log(`Server running on http://localhost:${port}`);
+   const port = process.env.PORT || 3000;
+   const server = http.createServer(app); 
+   const io = socketIo(server);
+
+   server.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+   });
+
+   io.on('connection', (socket) => {
+      console.log('New client connected');
+  
+      // Listen for disconnections
+      socket.on('disconnect', () => {
+          console.log('Client disconnected');
+      });
+  });
+  
+   
+app.get('/', (req, res) => {
+   res.send('Welcome to our Fundraising platform!');
 });
+
 
 app.post('/fundraisers', async(req, res) => {
    try{
@@ -77,3 +95,17 @@ app.delete('/fundraisers/:id', async (req, res) => {
       res.status(500).send({message: 'Error deleting the Fundraiser.', error});
    }
 })
+
+app.post('/donate', async (req, res) => {
+   try {
+       const donation = new Donation(req.body); 
+       await donation.save();
+
+       io.emit('newDonation', donation); // EMIT THE DONATION DATA TO ALL CONNECTED CLIENTS
+
+       res.status(201).send(donation);
+   } catch (error) {
+       res.status(400).send(error);
+   }
+});
+
