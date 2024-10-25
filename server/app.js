@@ -12,7 +12,7 @@ app.use(express.json());
 app.use("/fundraisers", fundraiserRoutes);
 
 app.get('/', (req, res) => {
-   res.send('Welcome Barsha');
+   res.send('Welcome to our Fundraising platform!');
 });
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
