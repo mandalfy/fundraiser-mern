@@ -1,2 +1,2 @@
-# fundraiser-mern
- Trying something new
+# fundraiser-mern 
+ making a fundraising web app
