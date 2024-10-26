@@ -1,2 +1,2 @@
-# fundraiser-mern 
- making a fundraising web app
+# LIVE FUNDRAISER APP
+deserted
