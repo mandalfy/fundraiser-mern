@@ -110,4 +110,21 @@ app.post('/donate', async (req, res) => {
    }
 });
 
+app.post('/donate', async (req, res) => {
+   const { amount, donorName } = req.body;
 
+   const donation = new Fundraiser({
+       amount,
+       donorName,
+       // other fields as necessary
+   });
+
+   try {
+       await donation.save();
+       // Emit a socket event to notify clients of the new donation
+       socket.emit('newDonation', donation);
+       res.status(201).send(donation);
+   } catch (error) {
+       res.status(400).send(error);
+   }
+});
